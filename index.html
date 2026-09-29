@@ -13985,12 +13985,13 @@ function cancelarExclusao() {
 
 function excluirEnsaio(id) {
   const e = historico.find(x => x.id === id);
-  // avisa a planilha antes de esquecer quem era: sem a chave não há o que apagar lá
-  if (e) marcarParaApagar(e.chaveNuvem || chaveDoEnsaio(e.resumo || {}));
   historico = historico.filter(x => x.id !== id);
   confirmandoExclusao = null;
   gravarHistorico();
   montarHistorico();
+  /* avisa a planilha só DEPOIS de tirar do histórico: a sincronização que isto
+     dispara lê o histórico na hora, e antes ela ainda mandava o ensaio apagado */
+  if (e) marcarParaApagar(e.chaveNuvem || chaveDoEnsaio(e.resumo || {}));
 }
 
 /* ------------------------------------------------------------
@@ -14308,6 +14309,7 @@ const NUVEM_PADRAO = {
 
 let nuvem = { ...NUVEM_PADRAO };
 let sincronizando = false;
+let sincronizarDeNovo = false;   // alguém pediu sincronização enquanto outra rodava
 
 /* ------------------------------------------------------------
    Identidade estável do ensaio
@@ -14527,7 +14529,9 @@ function daNuvem(x) {
  * com o mesmo conjunto sem precisar de uma segunda rodada.
  */
 async function sincronizarNuvem({ silencioso = false } = {}) {
-  if (sincronizando) return null;
+  // pedido no meio de outra sincronização (ex.: apagar enquanto sincroniza):
+  // não se perde — roda de novo assim que a atual terminar
+  if (sincronizando) { sincronizarDeNovo = true; return null; }
   if (!nuvem.url) {
     if (!silencioso) avisarNuvem('erro', 'Configure o endereço da planilha antes de sincronizar.');
     return null;
@@ -14538,12 +14542,16 @@ async function sincronizarNuvem({ silencioso = false } = {}) {
   if (!silencioso) avisarNuvem('andamento', 'Conversando com a planilha…');
 
   try {
-    const enviar = historico.filter(e => !e.foto || true).map(paraNuvem);
+    const lixeira = [...(nuvem.lixeira || [])];
+    // o que está na lixeira não sobe, mesmo que ainda esteja em algum canto do histórico
+    const enviar = historico
+      .filter(e => !lixeira.includes(e.chaveNuvem || chaveDoEnsaio(e.resumo || {})))
+      .map(paraNuvem);
     const dados = await chamarNuvem({
       acao: 'sincronizar', aparelho: nuvem.aparelho, ensaios: enviar,
       // o que foi apagado aqui, e desde quando este aparelho está em dia — é
       // por essa data que a planilha distingue ensaio novo de linha apagada
-      removidos: nuvem.lixeira || [],
+      removidos: lixeira,
       ultimaSincronia: nuvem.ultimaSincronia || '',
     });
 
@@ -14556,7 +14564,10 @@ async function sincronizarNuvem({ silencioso = false } = {}) {
     nuvem.ultimaSincronia = new Date().toISOString();
     nuvem.ultimoErro = null;
     nuvem.naFila = [];
-    nuvem.lixeira = [];          // a planilha já soube: a lixeira cumpriu o papel
+    // a planilha já soube do que foi mandado; o que foi apagado DURANTE esta
+    // sincronização continua na lixeira para a próxima (antes era zerada inteira
+    // e o pedido de apagar se perdia — e o ensaio voltava)
+    nuvem.lixeira = (nuvem.lixeira || []).filter(c => !lixeira.includes(c));
     gravarNuvem();
     gravarHistorico();
     montarHistorico();
@@ -14599,6 +14610,7 @@ async function sincronizarNuvem({ silencioso = false } = {}) {
   } finally {
     sincronizando = false;
     montarNuvem();
+    if (sincronizarDeNovo) { sincronizarDeNovo = false; setTimeout(() => sincronizarNuvem({ silencioso: true }), 0); }
   }
 }
 
@@ -14640,6 +14652,8 @@ function mesclarDaNuvem(vindos) {
 
   vindos.forEach(v => {
     if (!v.foto) return;               // linha sem fotografia não repõe um ensaio inteiro
+    // apagado aqui e ainda não avisado à planilha: não volta pela porta dos fundos
+    if ((nuvem.lixeira || []).includes(v.chaveNuvem)) return;
     const local = porChave[v.chaveNuvem];
     if (!local) {
       historico.unshift(v);
