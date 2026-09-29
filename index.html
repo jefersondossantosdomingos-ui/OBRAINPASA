@@ -918,6 +918,8 @@ section.aba.ativa{display:block; animation:entra .18s ease-out;}
 .folha .cab td.k{background:var(--rotulo); font-weight:bold; text-transform:uppercase;
   font-size:6.8pt; white-space:nowrap; text-align:right;}
 .folha table.f td.forte{font-weight:bold;}
+/* Marshall 031/2024: registro e estacas são lançados na aba do ensaio, não em Dados */
+body.modo-m031 [data-id-m031]{display:none;}
 /* Marshall 031/2024: a planilha inteira numa página — linhas mais justas */
 .folha.m31-justa table.f th, .folha.m31-justa table.f td{padding-top:.8px; padding-bottom:.8px; line-height:1.15;}
 .folha table.f tr.vazia td{color:var(--tinta-fraca);}
@@ -6826,6 +6828,16 @@ function ligarM031() {
       atualizar();
     });
   });
+  // identificação do ensaio: grava no mesmo cabeçalho de CAUQ que a folha lê
+  document.querySelectorAll('[data-m31cab]').forEach(el => {
+    if (el.dataset.ligado) return;
+    el.dataset.ligado = '1';
+    el.addEventListener('input', () => {
+      estado.medicaoCauq[el.dataset.m31cab] =
+        el.classList.contains('caixa-alta') ? el.value.toUpperCase() : el.value;
+      atualizar();
+    });
+  });
   const b = $('btnGuardarProjetoM31');
   if (b && !b.dataset.ligado) {
     b.dataset.ligado = '1';
@@ -6949,7 +6961,24 @@ function montarM031() {
     </div>`;
 
   /* ---------- TEOR E GRANULOMETRIA ---------- */
+  const cab = estado.medicaoCauq || {};
+  const idCampo = (k, rot, tipo = 'text', dica = '') => `<div><label>${rot}</label>
+    <input type="${tipo}" data-m31cab="${k}"${tipo === 'text' ? ' class="caixa-alta"' : ''}
+      ${dica ? `placeholder="${dica}"` : ''} value="${atr(cab[k])}"></div>`;
   $('m31Granul').innerHTML = `
+    <div class="card">
+      <h2>Identificação do ensaio <span class="tag">Muda a cada ensaio</span></h2>
+      <div class="grid4">
+        ${idCampo('registro', 'Nº do registro <span class="obrig">obrigatório</span>')}
+        ${idCampo('dataEnsaio', 'Data', 'date')}
+        ${idCampo('lado', 'Posição', 'text', 'LE, LD ou EIXO')}
+        ${idCampo('estacaInicial', 'Estaca inicial <span class="obrig">obrigatório</span>', 'text', 'Ex.: 100+0')}
+        ${idCampo('estacaFinal', 'Estaca final', 'text', 'Ex.: 150+0')}
+        ${idCampo('cota', 'Cota')}
+      </div>
+      <p class="hint">A obra, o cliente, a usina e a medição ficam na aba Dados e valem para
+        todos os ensaios; aqui entra só o que identifica este.</p>
+    </div>
     <div class="card">
       <h2>Teor de CAP <span class="tag">DNER-ME 053 · DNIT 158-ME</span></h2>
       <div class="grid3">
@@ -9857,6 +9886,9 @@ function atualizarCabecalhoNaTela() {
  * cabeçalhos saiu daqui: contratos, empresas e origens de agregado nunca foram
  * impressos, e teor, Rice e faixa de projeto já vivem na dosagem.
  */
+/** No Marshall 031/2024 estes campos são lançados na aba do ensaio, não em Dados. */
+const CAMPOS_DO_ENSAIO_M031 = ['registro', 'dataEnsaio', 'lado', 'cota', 'estacaInicial', 'estacaFinal'];
+
 const CAMPOS_MEDICAO_CAUQ = [
   { g:'obraq',  k:'obra',               rot:'Obra',                    larg:2, obrig:true, dica:'Ex.: BR-000/UF' },
   { g:'obraq',  k:'cliente',            rot:'Cliente',                 larg:2, obrig:true },
@@ -9894,7 +9926,7 @@ function montarDadosCauq() {
         : `<input type="${tipo}" data-mq="${c.k}" value="${atr(val)}"` +
           `${tipo === 'date' ? '' : ' class="caixa-alta"'}` +
           `${c.dica ? ` placeholder="${c.dica}"` : ''}>`;
-      return `<div style="grid-column:span ${c.larg}">
+      return `<div style="grid-column:span ${c.larg}"${CAMPOS_DO_ENSAIO_M031.includes(c.k) ? ' data-id-m031="1"' : ''}>
                 <label>${c.rot}${c.obrig ? ' <span class="obrig">obrigatório</span>' : ''}</label>
                 ${campo}
               </div>`;
@@ -10593,6 +10625,8 @@ function trocarModo(chave) {
 function aplicarModo() {
   const m = MODOS[estado.modo];
   aplicarFamilia();
+  // no Marshall 031/2024 o registro e as estacas saem de Dados e vão para a aba do ensaio
+  document.body.classList.toggle('modo-m031', estado.modo === 'm031');
 
   document.querySelectorAll('[data-modos]').forEach(el => {
     const vale = el.dataset.modos.split(' ').includes(estado.modo);
@@ -13815,7 +13849,8 @@ function salvarEnsaio() {
       + `É por esses campos que o ensaio é identificado — sem eles, o próximo ensaio `
       + `salvo tomaria o lugar deste, aqui e na planilha do Drive.`
       + `</span></div>`;
-    irParaAba('dados');
+    // no Marshall 031/2024 o registro e a estaca ficam na aba de teor e granulometria
+    irParaAba(estado.modo === 'm031' ? 'm31granul' : 'dados');
     return;
   }
 

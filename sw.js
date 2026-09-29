@@ -4,7 +4,7 @@
    mudança dela que faz o navegador perceber que há atualização.
    ============================================================ */
 
-const VERSAO = '2026-09-29.daf79c71';
+const VERSAO = '2026-09-29.dc36e648';
 const PREFIXO = 'ct-inpasa-';
 const CACHE = PREFIXO + VERSAO;
 
