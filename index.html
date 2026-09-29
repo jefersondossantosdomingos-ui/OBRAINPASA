@@ -13757,13 +13757,38 @@ function resumoDoCalculo(c) {
     };
   }
   if (cauq && estado.modo === 'm031') {
+    /* O resumo é o que vai para a planilha do Drive: tudo que a folha de
+       resumo de CAUQ pede (teor, densidades, vazios, VAM, RBV, estabilidade,
+       tração e a granulometria da mistura), já calculado. */
     const q = c.m031;
+    const md = q ? q.marshall.medias : {};
+    const cps = q ? q.marshall.corposDeProva : [];
+    const mc = estado.medicaoCauq || {};
+    const par = ((estado.m031 || {}).projeto || {}).parametros || {};
     return { ...base,
+      estacaInicial: mc.estacaInicial || '', estacaFinal: mc.estacaFinal || '',
+      lado: mc.lado || '', cota: mc.cota || '', numeroMedicao: mc.numeroMedicao || '',
+      faixa: (((estado.m031 || {}).projeto || {}).identificacao || {}).faixa || '',
       teor: q ? q.teor : null,
-      vv:   q ? q.marshall.medias.vazios : null,
-      rbv:  q ? q.marshall.medias.rbv : null,
-      est:  q ? q.marshall.medias.estabilidade : null,
+      teorProjeto: par.teorProjeto ?? null,
+      gmbCps: cps.map(x => x.gmb ?? null),
+      gmb:  md.gmb ?? null,
+      gmm:  q ? q.gmm : null,
+      riceProjeto: par.riceProjeto ?? null,
+      vv:   md.vazios ?? null,
+      vcb:  md.vcb ?? null,
+      vam:  md.vam ?? null,
+      vamMin: q ? q.marshall.vamMinimo : null,
+      rbv:  md.rbv ?? null,
+      estCps: cps.map(x => x.estabilidade ?? null),
+      est:  md.estabilidade ?? null,
+      fluencia: (() => { const f = cps.map(x => x.fluencia).filter(Number.isFinite);
+                         return f.length ? f.reduce((s, v) => s + v, 0) / f.length : null; })(),
       rtcd: q ? q.rtd.mpa : null,
+      gsb:  q ? q.agreg.gsbAdotado : null,
+      passantes: q ? q.granul.linhas.map(l => l.passante ?? null) : [],
+      granulFora: q && q.granul.preenchida ? q.granul.fora : null,
+      situacoes: q ? q.situacoes : {},
       atende: q ? q.atende : null,
     };
   }
@@ -13790,6 +13815,9 @@ function resumoDoCalculo(c) {
       rbv:  q ? q.marshall.medias.rbv : null,
       est:  q ? q.marshall.medias.estabilidade : null,
       rtcd: q ? q.tracao.rtcdMedio : null,
+      gmb:  q ? q.marshall.medias.gmb : null,
+      gmm:  q ? q.gmm : null,
+      vam:  q ? q.marshall.medias.vam : null,
       atende: q ? [...Object.values(q.marshall.enquadramento).filter(x => x && !x.atende),
                    ...(q.tracao.atende === false ? [1] : [])].length === 0 : null,
     };
