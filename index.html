@@ -72,6 +72,8 @@
 
   /* ---- primitivas · situação do ensaio ---- */
   --mk-conforme-700:#0A6B36; --mk-conforme-600:#0E8544; --mk-conforme-500:#12A150;
+  /* verde do WhatsApp, escurecido até 5,4:1 com texto branco — sinal de destino, não de marca */
+  --mk-whatsapp:#0E7A40;
   --mk-conforme-100:#D7F2E3; --mk-conforme-50:#EDFAF3;
   --mk-alerta-700:#8A5A00;   --mk-alerta-600:#B37400;   --mk-alerta-500:#E8930C;
   --mk-alerta-100:#FDEDD3;   --mk-alerta-50:#FEF7EA;
@@ -867,6 +869,15 @@ section.aba.ativa{display:block; animation:entra .18s ease-out;}
 #folhaImpressao{display:none; font-family:Arial, Helvetica, sans-serif;
   color:var(--tinta); background:var(--papel);}
 #folhaImpressao.montando{position:fixed; top:0; left:-20000px; display:block !important; z-index:-1; pointer-events:none;}
+/* para o PDF do WhatsApp: a folha precisa estar no lugar (o gerador não fotografa fora da tela),
+   atrás do app e na largura útil do A4 */
+#folhaImpressao.montando.para-pdf{position:absolute; left:0; top:0; width:194mm; background:var(--mk-branco);}
+/* verde do WhatsApp: é o sinal de "vai para o WhatsApp", não cor de marca */
+.btn.zap{background:var(--mk-whatsapp); border-color:var(--mk-whatsapp); color:var(--mk-branco);
+  display:inline-flex; align-items:center; gap:7px;}
+.btn.zap svg{fill:none; stroke:currentColor; stroke-width:1.8;}
+.btn.ghost.zap{background:transparent; color:var(--mk-whatsapp); border-color:var(--mk-whatsapp);}
+[data-theme="dark"] .btn.ghost.zap{color:var(--mk-conforme-500); border-color:var(--mk-conforme-500);}
 .folha{break-after:page;}
 .folha:last-child{break-after:auto;}
 .folha .quadro{border:2px solid var(--tinta);}
@@ -920,6 +931,15 @@ section.aba.ativa{display:block; animation:entra .18s ease-out;}
 .folha table.f td.forte{font-weight:bold;}
 /* Marshall 031/2024: registro e estacas são lançados na aba do ensaio, não em Dados */
 body.modo-m031 [data-id-m031]{display:none;}
+/* Aplicação de C.A.U.Q */
+.ap-faixa{padding:10px 0; border-top:1px dashed var(--border);}
+.ap-faixa:first-of-type{border-top:none; padding-top:0;}
+.ap-faixa-tit{font-weight:800; font-size:13px; letter-spacing:.3px; text-transform:uppercase; color:var(--accent); margin-bottom:6px;}
+.ap-clima{display:flex; gap:10px; flex-wrap:wrap;}
+.ap-opcao{display:inline-flex; align-items:center; gap:7px; padding:10px 14px; border:1.5px solid var(--border);
+  border-radius:var(--radius-sm); font-weight:700; cursor:pointer; margin:0;}
+.ap-opcao input{width:auto; min-height:0; margin:0;}
+.ap-opcao:has(input:checked){border-color:var(--accent); background:var(--accent-2);}
 /* Marshall 031/2024: a planilha inteira numa página — linhas mais justas */
 .folha.m31-justa table.f th, .folha.m31-justa table.f td{padding-top:.8px; padding-bottom:.8px; line-height:1.15;}
 .folha table.f tr.vazia td{color:var(--tinta-fraca);}
@@ -1164,23 +1184,23 @@ summary:hover{color:var(--text);}
     <span class="chip ok"><span class="dot"></span>Calculando</span>
   </div>
   <nav class="nav-topo">
-<button type="button" class="ativo" data-aba="dados" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<button type="button" class="ativo" data-aba="dados" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
     Dados
   </button>
-<button type="button" data-aba="ensaio" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<button type="button" data-aba="ensaio" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
     Ensaio
   </button>
-<button type="button" data-aba="historico" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<button type="button" data-aba="historico" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M8 13h8"/></svg>
     Histórico
   </button>
-<button type="button" data-aba="analise" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<button type="button" data-aba="analise" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
     Análise
   </button>
-<button type="button" data-aba="equipamentos" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<button type="button" data-aba="equipamentos" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 1-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 1 5.4-5.4z"/></svg>
     Equipam.
   </button>
@@ -1190,7 +1210,7 @@ summary:hover{color:var(--text);}
 <div class="wrap">
 
 <!-- ============ ABA 0 · INSERIR DADOS ============ -->
-<section class="aba ativa" id="aba-dados" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba ativa" id="aba-dados" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
 
   <div class="card">
     <h2>Quais dados <span class="tag">Cada família tem os seus</span></h2>
@@ -1347,7 +1367,7 @@ summary:hover{color:var(--text);}
 </section>
 
 <!-- ============ ABA · EQUIPAMENTOS ============ -->
-<section class="aba" id="aba-equipamentos" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba" id="aba-equipamentos" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
   <div class="card">
     <h2>Cadastro de equipamentos <span class="tag">Cilindros, cápsulas e frascos</span></h2>
     <p class="hint" style="margin:0 0 14px">
@@ -1446,7 +1466,7 @@ summary:hover{color:var(--text);}
 </section>
 
 <!-- ============ ABA · ANÁLISE ============ -->
-<section class="aba" id="aba-analise" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba" id="aba-analise" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
 
   <div class="card">
     <h2>Recorte da análise <span class="tag">Vale para tudo nesta aba</span></h2>
@@ -1496,7 +1516,7 @@ summary:hover{color:var(--text);}
 </section>
 
 <!-- ============ ABA 1 · TIPO DE ENSAIO ============ -->
-<section class="aba" id="aba-ensaio" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba" id="aba-ensaio" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
   <div class="card">
     <h2>Família de ensaios <span class="tag">Material</span></h2>
     <div class="familias" id="familias"></div>
@@ -1540,7 +1560,7 @@ summary:hover{color:var(--text);}
 </section>
 
 <!-- ============ ABA · HISTÓRICO ============ -->
-<section class="aba" id="aba-historico" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba" id="aba-historico" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
   <div class="card" id="cardNuvem">
     <h2>
       <button type="button" class="abre-lista abre-painel" id="nuvemSeta" data-painel-nuvem="1">
@@ -1609,6 +1629,7 @@ summary:hover{color:var(--text);}
       ensaio salvo e devolve a tela ao que você estava lançando.
     </p>
     <div id="histAviso"></div>
+    <div data-aviso-envio></div>
     <div id="listaHistorico"></div>
     <div style="display:flex; gap:9px; flex-wrap:wrap; margin-top:16px">
       <button class="btn ghost sm" id="btnBackup" type="button">Baixar backup</button>
@@ -2340,6 +2361,9 @@ summary:hover{color:var(--text);}
 <section class="aba" id="aba-m31rtd" data-fam="cauq" data-modos="m031"><div id="m31Rtd"></div></section>
 <section class="aba" id="aba-m31agreg" data-fam="cauq" data-modos="m031"><div id="m31Agreg"></div></section>
 
+<!-- ============ APLICAÇÃO DE C.A.U.Q ============ -->
+<section class="aba" id="aba-aplicacao" data-fam="cauq" data-modos="aplicacao"><div id="apConteudo"></div></section>
+
 <!-- ============ CAUQ · SONDAGEM COM SONDA ROTATIVA ============ -->
 <section class="aba" id="aba-sondagem" data-fam="cauq" data-modos="sondagem">
   <div class="card">
@@ -2737,7 +2761,7 @@ summary:hover{color:var(--text);}
   </div>
 </section>
 
-<section class="aba" id="aba-resultado" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+<section class="aba" id="aba-resultado" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
 
   <div class="card" data-fam="insumos">
     <h2>Caracterização dos insumos <span class="tag" id="insVeredito">—</span></h2>
@@ -2770,6 +2794,12 @@ summary:hover{color:var(--text);}
     <div id="m31Avisos" style="margin-top:14px"></div>
   </div>
 
+  <div class="card" data-fam="cauq" data-modos="aplicacao">
+    <h2>Aplicação de C.A.U.Q <span class="tag">Controle da massa</span></h2>
+    <div class="tiles" id="apTilesResumo"></div>
+    <div id="apAvisosResumo" style="margin-top:12px"></div>
+  </div>
+
   <div class="card" data-fam="cauq" data-modos="sondagem">
     <h2>Aceitação do lote <span class="tag" id="sdVeredito">—</span></h2>
     <p class="hint" style="margin:0 0 14px">
@@ -2800,7 +2830,11 @@ summary:hover{color:var(--text);}
     <div style="display:flex; gap:9px; flex-wrap:wrap; margin-top:14px">
       <button class="btn" id="btnSalvar" type="button">Salvar ensaio</button>
       <button class="btn ghost" id="btnRelatorio2" type="button">Gerar relatório em PDF</button>
+      <button class="btn zap" id="btnWhatsapp" type="button">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.9 7l-4.1 1 1.1-4A8 8 0 1 1 20 12z"/><path d="M9 9.5c.3 1.7 2.8 4.2 4.5 4.5l1.1-1.1 1.9.8-.4 1.6c-3.4.3-7.9-4.2-7.6-7.6l1.6-.4.8 1.9z"/></svg>
+        Enviar PDF pelo WhatsApp</button>
     </div>
+    <div data-aviso-envio style="margin-top:12px"></div>
     <div id="salvoAviso" style="margin-top:12px"></div>
     <p class="hint">
       É a mesma folha que fecha o relatório, do jeito que sai impressa. Tudo aqui vem dos
@@ -2953,6 +2987,10 @@ summary:hover{color:var(--text);}
     <svg viewBox="0 0 24 24"><path d="M12 3l8 5v8l-8 5-8-5V8z"/><path d="M12 3v18"/></svg>
     Agregados
   </button>
+  <button type="button" data-aba="aplicacao" data-fam="cauq" data-modos="aplicacao">
+    <svg viewBox="0 0 24 24"><path d="M3 17h11V7H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+    Aplicação
+  </button>
   <button type="button" data-aba="sondagem" data-fam="cauq" data-modos="sondagem">
     <svg viewBox="0 0 24 24"><path d="M12 2v8"/><circle cx="12" cy="13" r="4"/><path d="M4 21h16"/><path d="M8 17l-2 4M16 17l2 4"/></svg>
     Sondagem
@@ -2989,7 +3027,7 @@ summary:hover{color:var(--text);}
     <svg viewBox="0 0 24 24"><path d="M8 3h8v5l-3 4v9h-2v-9L8 8z"/><path d="M9 16h6"/></svg>
     Eq. areia
   </button>
-  <button type="button" data-aba="resultado" data-modos="simples caracterizacao completo marshall m031 sondagem concreto insumos">
+  <button type="button" data-aba="resultado" data-modos="simples caracterizacao completo marshall m031 sondagem aplicacao concreto insumos">
     <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 15l2 2 4-4"/></svg>
     Resumo
   </button>
@@ -7484,6 +7522,372 @@ function folhaM031(pacote, pagina = 1, total = 1) {
     return f.compacta ? html.replace('<div class="folha">', '<div class="folha m31-justa">') : html;
   });
 }
+/* ============================================================
+   APLICAÇÃO DE C.A.U.Q — controle da massa lançada na pista
+   O boletim que ia pelo WhatsApp (faixas, largura, espessura,
+   caminhões, clima) virou ensaio: calcula área, tonelagem
+   teórica, espessura média obtida e taxa de aplicação, sai em
+   folha, vai para o histórico e para a planilha — e o mesmo
+   texto do WhatsApp sai pronto de um botão.
+   ============================================================ */
+
+const CAMINHOES_INICIAIS = 10;
+
+const APLICACAO_PADRAO = {
+  faixas: [
+    { inicial: '', final: '', extensao: null },
+    { inicial: '', final: '', extensao: null },
+  ],
+  largura: null,            // m
+  espessura: null,          // cm (de projeto)
+  densidade: null,          // t/m³ — vazio usa o Gmb do projeto do Marshall 031/2024
+  caminhoes: Array.from({ length: CAMINHOES_INICIAIS }, () => ({ placa: '', ton: null })),
+  clima: '',
+  observacoes: '',
+};
+
+const CLIMAS = [['sol', 'Sol'], ['nublado', 'Nublado'], ['chuva', 'Chuva']];
+
+/* ------------------------------------------------------------
+   Cálculo — puro, sem tela
+   ------------------------------------------------------------ */
+
+const numAp = v => typeof v === 'number' && Number.isFinite(v);
+
+/**
+ * Estaca em metros: "100+10,5" = 100 × 20 + 10,5. Aceita "100", "100+0",
+ * "100 + 12", vírgula ou ponto. Estaca rodoviária tem 20 m.
+ */
+function estacaEmMetros(txt) {
+  const t = String(txt ?? '').trim().replace(/\s+/g, '').replace(',', '.');
+  if (!t) return null;
+  const m = t.match(/^(\d+(?:\.\d+)?)(?:\+(\d+(?:\.\d+)?))?$/);
+  if (!m) return null;
+  return parseFloat(m[1]) * 20 + (m[2] ? parseFloat(m[2]) : 0);
+}
+
+function calcularAplicacao(ap, densidadeProjeto) {
+  const densidade = numAp(ap.densidade) ? ap.densidade : (numAp(densidadeProjeto) ? densidadeProjeto : null);
+  const faixas = ap.faixas.map(f => {
+    const ini = estacaEmMetros(f.inicial), fim = estacaEmMetros(f.final);
+    const pelasEstacas = numAp(ini) && numAp(fim) ? Math.abs(fim - ini) : null;
+    const extensao = numAp(f.extensao) ? f.extensao : pelasEstacas;
+    const area = numAp(extensao) && numAp(ap.largura) ? extensao * ap.largura : null;
+    return { ...f, pelasEstacas, extensao, manual: numAp(f.extensao), area,
+             usada: !!(String(f.inicial || '').trim() || String(f.final || '').trim() || numAp(f.extensao)) };
+  });
+  const usadas = faixas.filter(f => f.usada);
+  const soma = k => usadas.reduce((s, f) => s + (numAp(f[k]) ? f[k] : 0), 0);
+  const extensaoTotal = usadas.some(f => numAp(f.extensao)) ? soma('extensao') : null;
+  const area = usadas.some(f => numAp(f.area)) ? soma('area') : null;
+  const volume = numAp(area) && numAp(ap.espessura) ? area * ap.espessura / 100 : null;
+  const tonTeorica = numAp(volume) && numAp(densidade) ? volume * densidade : null;
+
+  const caminhoes = ap.caminhoes.filter(c => String(c.placa || '').trim() || numAp(c.ton));
+  const tonAplicada = caminhoes.some(c => numAp(c.ton))
+    ? caminhoes.reduce((s, c) => s + (numAp(c.ton) ? c.ton : 0), 0) : null;
+  const diferenca = numAp(tonAplicada) && numAp(tonTeorica) && tonTeorica > 0
+    ? (tonAplicada - tonTeorica) / tonTeorica * 100 : null;
+  const espessuraObtida = numAp(tonAplicada) && numAp(area) && area > 0 && numAp(densidade) && densidade > 0
+    ? tonAplicada / (area * densidade) * 100 : null;
+  const taxa = numAp(tonAplicada) && numAp(area) && area > 0 ? tonAplicada * 1000 / area : null;
+
+  const avisos = [];
+  faixas.forEach((f, i) => {
+    if ((String(f.inicial || '').trim() && estacaEmMetros(f.inicial) === null)
+     || (String(f.final || '').trim() && estacaEmMetros(f.final) === null))
+      avisos.push(`Faixa ${i + 1}: estaca fora do formato (use 100+0 ou 100+12,5).`);
+    if (f.manual && numAp(f.pelasEstacas) && Math.abs(f.extensao - f.pelasEstacas) > 0.5)
+      avisos.push(`Faixa ${i + 1}: a extensão digitada (${fmt(f.extensao, 2)} m) difere da das estacas `
+        + `(${fmt(f.pelasEstacas, 2)} m).`);
+  });
+  if (numAp(diferenca) && Math.abs(diferenca) > 5)
+    avisos.push(`Massa aplicada ${diferenca > 0 ? 'acima' : 'abaixo'} da teórica em ${fmt(Math.abs(diferenca), 1)} % `
+      + `— espessura média obtida de ${fmt(espessuraObtida, 2)} cm.`);
+  if (!numAp(densidade))
+    avisos.push('Sem densidade: preencha aqui ou o Gmb de projeto na aba Projeto do Marshall 031/2024.');
+
+  return { faixas, usadas, extensaoTotal, area, volume, densidade, densidadeDoProjeto: !numAp(ap.densidade),
+           tonTeorica, caminhoes, tonAplicada, diferenca, espessuraObtida, taxa, avisos };
+}
+
+/* ------------------------------------------------------------
+   Tela
+   ------------------------------------------------------------ */
+
+const gmbProjetoAp = () => ((((estado.m031 || {}).projeto || {}).parametros || {}).gmbProjeto ?? null);
+
+function lerCaminhoAp(c) { return c.split('.').reduce((o, k) => o == null ? undefined : o[k], estado.aplicacao); }
+function gravarCaminhoAp(c, v) {
+  const p = c.split('.'); const u = p.pop();
+  p.reduce((o, k) => o[k], estado.aplicacao)[u] = v;
+}
+const nAp = (c, passo = '0.01', dica = '') => `<input type="number" inputmode="decimal" step="${passo}"
+  data-ap="${c}"${dica ? ` placeholder="${dica}"` : ''} value="${lerCaminhoAp(c) ?? ''}">`;
+const tAp = (c, dica = '') => `<input type="text" class="caixa-alta" data-ap="${c}" data-texto="1"
+  ${dica ? `placeholder="${dica}"` : ''} value="${atr(lerCaminhoAp(c))}">`;
+
+function montarAplicacao() {
+  const alvo = $('apConteudo');
+  if (!alvo) return;
+  const ap = estado.aplicacao, cab = estado.medicaoCauq || {};
+  const idC = (k, rot, tipo = 'text', dica = '') => `<div><label>${rot}</label>
+    <input type="${tipo}" data-apcab="${k}"${tipo === 'text' ? ' class="caixa-alta"' : ''}
+      ${dica ? `placeholder="${dica}"` : ''} value="${atr(cab[k])}"></div>`;
+
+  alvo.innerHTML = `
+    <div class="card">
+      <h2>Aplicação de C.A.U.Q <span class="tag">Controle da massa</span></h2>
+      <div class="grid4">
+        ${idC('registro', 'Nº do registro <span class="obrig">obrigatório</span>', 'text', 'Ex.: APL-01')}
+        ${idC('dataEnsaio', 'Data', 'date')}
+        ${idC('lado', 'Posição', 'text', 'LE, LD ou EIXO')}
+      </div>
+      <p class="hint">Obra, usina e medição vêm da aba Dados.</p>
+    </div>
+
+    <div class="card">
+      <h2>Faixas aplicadas <span class="tag">Estacas de 20 m</span></h2>
+      ${ap.faixas.map((f, i) => `
+      <div class="ap-faixa">
+        <div class="ap-faixa-tit">Faixa ${i + 1}</div>
+        <div class="grid4">
+          <div><label>Inicial</label>${tAp(`faixas.${i}.inicial`, 'Ex.: 100+0')}</div>
+          <div><label>Final</label>${tAp(`faixas.${i}.final`, 'Ex.: 150+0')}</div>
+          <div><label>Extensão (m)</label>${nAp(`faixas.${i}.extensao`, '0.01', 'pelas estacas')}</div>
+          <div><label>Área (m²)</label><input type="text" id="apArea${i}" disabled></div>
+        </div>
+      </div>`).join('')}
+      <p class="hint">A extensão sai das estacas. Digite só se quiser outra medida.</p>
+    </div>
+
+    <div class="card">
+      <h2>Dimensões <span class="tag">Projeto</span></h2>
+      <div class="grid3">
+        <div><label>Largura (m)</label>${nAp('largura')}</div>
+        <div><label>Espessura (cm)</label>${nAp('espessura', '0.1')}</div>
+        <div><label>Densidade (t/m³)</label>${nAp('densidade', '0.001', 'Gmb do projeto')}</div>
+      </div>
+      <p class="hint" id="apDensHint"></p>
+    </div>
+
+    <div class="card">
+      <h2>🚛 Caminhões <span class="tag" id="apCamTag">—</span></h2>
+      <div class="tabwrap"><table class="t-form">
+        <thead><tr><th>Nº</th><th>Placa</th><th>Toneladas</th></tr></thead>
+        <tbody>${ap.caminhoes.map((c, i) => `<tr>
+          <td class="cap" data-rot="Nº">${String(i + 1).padStart(2, '0')}</td>
+          <td data-rot="Placa">${tAp(`caminhoes.${i}.placa`, 'ABC1D23')}</td>
+          <td data-rot="Ton">${nAp(`caminhoes.${i}.ton`)}</td>
+        </tr>`).join('')}</tbody></table></div>
+      <button class="btn ghost sm" type="button" id="btnApCaminhao" style="margin-top:10px">+ Caminhão</button>
+    </div>
+
+    <div class="card">
+      <h2>Clima e observações</h2>
+      <div class="ap-clima">${CLIMAS.map(([k, n]) => `
+        <label class="ap-opcao"><input type="radio" name="apClima" value="${k}"${ap.clima === k ? ' checked' : ''}> ${n}</label>`).join('')}
+      </div>
+      <label style="margin-top:12px">Observações</label>
+      <textarea data-ap="observacoes" data-texto="1" rows="3">${atr(ap.observacoes)}</textarea>
+    </div>
+
+    <div class="card">
+      <h2>Resultado da aplicação <span class="tag" id="apTag">—</span></h2>
+      <div class="tiles" id="apTiles"></div>
+      <div id="apAvisos" style="margin-top:12px"></div>
+      <div style="display:flex; gap:9px; flex-wrap:wrap; margin-top:14px">
+        <button class="btn zap" type="button" id="btnApTexto">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 12a8 8 0 0 1-11.9 7l-4.1 1 1.1-4A8 8 0 1 1 20 12z"/></svg>
+          Enviar boletim pelo WhatsApp</button>
+      </div>
+      <div id="apTextoAviso" style="margin-top:10px"></div>
+    </div>`;
+  ligarAplicacao();
+}
+
+function ligarAplicacao() {
+  document.querySelectorAll('[data-ap]').forEach(el => {
+    if (el.dataset.ligado) return;
+    el.dataset.ligado = '1';
+    el.addEventListener('input', () => {
+      if (el.dataset.texto) gravarCaminhoAp(el.dataset.ap,
+        el.classList.contains('caixa-alta') ? el.value.toUpperCase() : el.value);
+      else { const v = parseFloat(el.value); gravarCaminhoAp(el.dataset.ap, Number.isFinite(v) ? v : null); }
+      atualizar();
+    });
+  });
+  document.querySelectorAll('[data-apcab]').forEach(el => {
+    if (el.dataset.ligado) return;
+    el.dataset.ligado = '1';
+    el.addEventListener('input', () => {
+      estado.medicaoCauq[el.dataset.apcab] = el.classList.contains('caixa-alta') ? el.value.toUpperCase() : el.value;
+      atualizar();
+    });
+  });
+  document.querySelectorAll('input[name="apClima"]').forEach(el => {
+    if (el.dataset.ligado) return;
+    el.dataset.ligado = '1';
+    el.addEventListener('change', () => { estado.aplicacao.clima = el.value; atualizar(); });
+  });
+  const add = $('btnApCaminhao');
+  if (add && !add.dataset.ligado) {
+    add.dataset.ligado = '1';
+    add.addEventListener('click', () => {
+      estado.aplicacao.caminhoes.push({ placa: '', ton: null });
+      montarAplicacao(); atualizar();
+    });
+  }
+  const zap = $('btnApTexto');
+  if (zap && !zap.dataset.ligado) {
+    zap.dataset.ligado = '1';
+    zap.addEventListener('click', enviarTextoAplicacao);
+  }
+}
+
+function atualizarAplicacao() {
+  const r = calcularAplicacao(estado.aplicacao, gmbProjetoAp());
+  if (!$('apConteudo')) return r;
+  r.faixas.forEach((f, i) => {
+    const el = $('apArea' + i); if (el) el.value = numAp(f.area) ? fmt(f.area, 2) : '';
+    const ext = document.querySelector(`[data-ap="faixas.${i}.extensao"]`);
+    if (ext && document.activeElement !== ext)
+      ext.placeholder = numAp(f.pelasEstacas) ? `${fmt(f.pelasEstacas, 2)} pelas estacas` : 'pelas estacas';
+  });
+  const dh = $('apDensHint');
+  if (dh) dh.innerHTML = r.densidadeDoProjeto && numAp(r.densidade)
+    ? `Densidade vazia: usando o Gmb de projeto, <b>${fmt(r.densidade, 3)} t/m³</b>.` : '';
+  const tile = (k, v, u, destaque) => `<div class="tile${destaque ? ' destaque' : ''}"><div class="k">${k}</div>`
+    + `<div class="v">${v}${u ? `<span class="u">${u}</span>` : ''}</div></div>`;
+  const n = (v, d) => numAp(v) ? fmt(v, d) : '—';
+  const html = tile('Toneladas aplicadas', n(r.tonAplicada, 2), 't', true)
+    + tile('Toneladas teóricas', n(r.tonTeorica, 2), 't')
+    + tile('Diferença', numAp(r.diferenca) ? (r.diferenca >= 0 ? '+' : '') + fmt(r.diferenca, 1) : '—', '%')
+    + tile('Extensão total', n(r.extensaoTotal, 2), 'm')
+    + tile('Área aplicada', n(r.area, 2), 'm²')
+    + tile('Espessura média obtida', n(r.espessuraObtida, 2), 'cm', true)
+    + tile('Taxa de aplicação', n(r.taxa, 1), 'kg/m²')
+    + tile('Caminhões', String(r.caminhoes.length), '');
+  [$('apTiles'), $('apTilesResumo')].forEach(el => { if (el) el.innerHTML = html; });
+  const av = r.avisos.map(a => `<div class="aviso"><span class="ico">!</span><span>${a}</span></div>`).join('');
+  [$('apAvisos'), $('apAvisosResumo')].forEach(el => { if (el) el.innerHTML = av; });
+  const t = $('apCamTag'); if (t) t.textContent = `${r.caminhoes.length} · ${n(r.tonAplicada, 2)} t`;
+  const tg = $('apTag'); if (tg) tg.textContent = numAp(r.espessuraObtida) ? `esp. ${fmt(r.espessuraObtida, 2)} cm` : '—';
+  return r;
+}
+
+/* ------------------------------------------------------------
+   O boletim do WhatsApp — o mesmo texto de sempre, preenchido
+   ------------------------------------------------------------ */
+
+function textoAplicacao(r) {
+  const ap = estado.aplicacao, m = estado.medicaoCauq || {};
+  const n = (v, d, u) => numAp(v) ? `${fmt(v, d)}${u ? ' ' + u : ''}` : '';
+  const dt = typeof dataTexto === 'function' ? dataTexto() : '';
+  const linhas = ['*APLICAÇÃO DE C.A.U.Q*'];
+  if (m.obra) linhas.push(`Obra: ${m.obra}`);
+  if (dt && dt !== '—') linhas.push(`Data: ${dt}`);
+  if (m.registro) linhas.push(`Registro: ${m.registro}`);
+  linhas.push('');
+  r.faixas.forEach((f, i) => {
+    if (!f.usada && i > 0) return;
+    linhas.push(`*Faixa ${i + 1}*`, `Inicial: ${f.inicial || ''}`, `Final: ${f.final || ''}`,
+                `Extensão: ${n(f.extensao, 2, 'm')}`, '');
+  });
+  linhas.push(`Largura: ${n(ap.largura, 2, 'm')}`, `Espessura: ${n(ap.espessura, 1, 'cm')}`, '');
+  linhas.push('🚛 *CAMINHÕES*');
+  ap.caminhoes.forEach((c, i) => {
+    if (!String(c.placa || '').trim() && !numAp(c.ton)) return;
+    linhas.push(`${String(i + 1).padStart(2, '0')} – Placa: ${c.placa || ''}   Ton: ${n(c.ton, 2)}`);
+  });
+  linhas.push('', `*Total toneladas: ${n(r.tonAplicada, 2, 't')}*`);
+  if (numAp(r.area)) linhas.push(`Área aplicada: ${n(r.area, 2, 'm²')}`);
+  if (numAp(r.espessuraObtida)) linhas.push(`Espessura média obtida: ${n(r.espessuraObtida, 2, 'cm')}`);
+  if (numAp(r.taxa)) linhas.push(`Taxa: ${n(r.taxa, 1, 'kg/m²')}`);
+  linhas.push('', `Observações: ${ap.observacoes || ''}`, '');
+  linhas.push('Clima: ' + CLIMAS.map(([k, nome]) => `[${ap.clima === k ? ' X ' : '   '}] ${nome}`).join('  '));
+  return linhas.join('\n');
+}
+
+async function enviarTextoAplicacao() {
+  const texto = textoAplicacao(ULTIMO_CALCULO && ULTIMO_CALCULO.aplicacao || atualizarAplicacao());
+  const aviso = $('apTextoAviso');
+  try {
+    if (navigator.share && /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent || '')) {
+      await navigator.share({ text: texto });
+    } else {
+      window.open('https://wa.me/?text=' + encodeURIComponent(texto), '_blank');
+    }
+    if (aviso) aviso.innerHTML = '';
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+    try { await navigator.clipboard.writeText(texto); } catch (x) {}
+    if (aviso) aviso.innerHTML = '<div class="aviso"><span class="ico">!</span><span>Não consegui abrir o '
+      + 'WhatsApp. O boletim foi copiado — é só colar na conversa.</span></div>';
+  }
+}
+
+/* ------------------------------------------------------------
+   Folha
+   ------------------------------------------------------------ */
+
+function folhaAplicacao(pacote, pagina = 1, total = 1) {
+  const r = pacote && pacote.aplicacao;
+  if (!r) return [];
+  if (!pagina) return [''];
+  const ap = estado.aplicacao;
+  const n = (v, d) => num(v, d);
+  const faixas = r.faixas.map((f, i) => `<tr>
+      <td class="rot">Faixa ${i + 1}</td><td class="num">${f.inicial || '—'}</td><td class="num">${f.final || '—'}</td>
+      <td class="num">${n(f.extensao, 2)}${f.manual ? ' *' : ''}</td><td class="num">${n(ap.largura, 2)}</td>
+      <td class="num forte">${n(f.area, 2)}</td></tr>`).join('')
+    + `<tr class="destaque"><td class="rot">Total</td><td></td><td></td><td class="num forte">${n(r.extensaoTotal, 2)}</td>
+       <td></td><td class="num forte">${n(r.area, 2)}</td></tr>`;
+  const cams = ap.caminhoes.map((c, i) => ({ ...c, i }))
+    .filter(c => String(c.placa || '').trim() || Number.isFinite(c.ton));
+  const linhasCam = (cams.length ? cams : [{ i: 0, placa: '', ton: null }]).map(c => `<tr>
+      <td class="rot">${String(c.i + 1).padStart(2, '0')}</td><td>${atr(c.placa) || '—'}</td>
+      <td class="num">${n(c.ton, 2)}</td></tr>`).join('')
+    + `<tr class="destaque"><td class="rot">Total</td><td>${cams.length} caminhão(ões)</td>
+       <td class="num forte">${n(r.tonAplicada, 2)}</td></tr>`;
+  const clima = CLIMAS.map(([k, nome]) => `${ap.clima === k ? '☒' : '☐'} ${nome}`).join('   ');
+
+  const corpo = secao('Faixas aplicadas')
+    + tabelaFolha([16, 17, 17, 17, 15, 18],
+      '<tr><th>Faixa</th><th>Estaca inicial</th><th>Estaca final</th><th>Extensão (m)</th><th>Largura (m)</th><th>Área (m²)</th></tr>',
+      faixas)
+    + `<div class="colunas2">
+        <div>${secao('Caminhões')}${tabelaFolha([16, 50, 34],
+          '<tr><th>Nº</th><th>Placa</th><th>Toneladas</th></tr>', linhasCam)}</div>
+        <div>${secao('Controle da massa')}${listaFolha([
+          ['Espessura de projeto', n(ap.espessura, 1), 'cm'],
+          ['Densidade' + (r.densidadeDoProjeto ? ' (Gmb de projeto)' : ''), n(r.densidade, 3), 't/m³'],
+          ['Volume teórico', n(r.volume, 2), 'm³'],
+          ['Toneladas teóricas', n(r.tonTeorica, 2), 't'],
+          ['Toneladas aplicadas', n(r.tonAplicada, 2), 't', true],
+          ['Diferença', Number.isFinite(r.diferenca) ? (r.diferenca >= 0 ? '+' : '') + fmt(r.diferenca, 1) : '—', '%'],
+          ['Espessura média obtida', n(r.espessuraObtida, 2), 'cm', true],
+          ['Taxa de aplicação', n(r.taxa, 1), 'kg/m²'],
+        ])}
+        ${secao('Clima')}<div class="obs" style="border-top:none">${clima}</div></div>
+       </div>`;
+  const obs = [ap.observacoes, r.faixas.some(f => f.manual) ? '* extensão digitada, não calculada pelas estacas.' : '',
+               estado.medicaoCauq.observacoes].filter(Boolean).join(' ');
+  return [folha({
+    titulo: 'Aplicação de C.A.U.Q', sub: 'Controle da massa aplicada na pista',
+    norma: 'DNIT 031/2024-ES', pagina, total,
+    extras: [['Toneladas', n(r.tonAplicada, 2) + ' t'], ['Área', n(r.area, 2) + ' m²'],
+             ['Esp. obtida', n(r.espessuraObtida, 2) + ' cm']],
+    corpo, obs,
+  })];
+}
+
+/** Onde foi aplicado: "100+0 a 150+0 · 150+0 a 200+0". */
+function localAplicacao() {
+  const t = (estado.aplicacao.faixas || []).filter(f => f.inicial || f.final)
+    .map(f => [f.inicial, f.final].filter(Boolean).join(' a ')).join(' · ');
+  return [t, (estado.medicaoCauq || {}).lado].filter(Boolean).join(' · ') || '';
+}
 
 /* ============================================================
    NÚCLEO DE CÁLCULO (porte direto do TypeScript da Etapa 1)
@@ -7870,6 +8274,8 @@ const PADRAO = {
   insumos: JSON.parse(JSON.stringify(INSUMOS_PADRAO)),
   /* Marshall 031/2024 — projeto de mistura e o ensaio no formato da planilha */
   m031: JSON.parse(JSON.stringify(M031_PADRAO)),
+  /* Aplicação de C.A.U.Q — o boletim da massa lançada na pista */
+  aplicacao: JSON.parse(JSON.stringify(APLICACAO_PADRAO)),
   naoPlastico: false,
   /* Dados da medição — preenchidos uma vez e reaproveitados no cabeçalho de todas as folhas */
   /* Cabeçalho da medição. Nasce em branco: cada laboratório preenche o seu na
@@ -8203,6 +8609,12 @@ function atualizar() {
   // cada família tem sua própria cadeia de cálculo
   if (estado.familia === 'cauq') {
     // a mesma família tem dois ensaios distintos: a mistura e a pista pronta
+    if (estado.modo === 'aplicacao') {
+      const a = atualizarAplicacao();
+      montarFolhas({ aplicacao: a });
+      ULTIMO_CALCULO = { aplicacao: a };
+      return;
+    }
     if (estado.modo === 'm031') {
       const m = atualizarM031();
       montarFolhas({ m031: m });
@@ -10001,6 +10413,8 @@ function aplicarAbaDados() {
 
 /** "100+00 a 120+00 · LD" — a localização do ensaio de CAUQ. */
 function localCauq() {
+  // na aplicação de massa, o local são as faixas lançadas
+  if (estado.modo === 'aplicacao' && typeof localAplicacao === 'function') return localAplicacao() || '—';
   const m = estado.medicaoCauq || {};
   const estacas = [m.estacaInicial, m.estacaFinal].filter(Boolean).join(' a ');
   return [estacas, m.lado].filter(Boolean).join(' · ') || '—';
@@ -10022,7 +10436,7 @@ function cabecalhoObraCauq(extras = []) {
 
   const d = (estado.cauq || {}).dosagem || {};
   // no Marshall 031/2024 a faixa é a do projeto de mistura desse ensaio
-  const faixa = estado.modo === 'm031'
+  const faixa = ['m031', 'aplicacao'].includes(estado.modo)
     ? ((((estado.m031 || {}).projeto || {}).identificacao || {}).faixa || '—')
     : (CAUQ.FAIXAS[d.faixa] || {}).nome || d.faixa;
 
@@ -10390,7 +10804,7 @@ const FAMILIAS = {
 /** Modos que pertencem a cada família. */
 const MODOS_DA_FAMILIA = {
   solos:    ['simples', 'caracterizacao', 'completo'],
-  cauq:     ['marshall', 'm031', 'sondagem'],
+  cauq:     ['marshall', 'm031', 'sondagem', 'aplicacao'],
   concreto: ['concreto'],
   insumos:  ['insumos'],
 };
@@ -10521,6 +10935,19 @@ const MODOS = {
       ['Granulometria dos agregados',          'DNIT 412-ME · 418-EM'],
     ],
   },
+  aplicacao: {
+    chave: 'aplicacao',
+    familia: 'cauq',
+    nome: 'Aplicação de C.A.U.Q',
+    desc: 'O boletim da massa lançada: faixas, largura, espessura e caminhões. Calcula área, '
+        + 'toneladas teóricas, espessura média obtida e taxa — e manda o boletim pelo WhatsApp.',
+    folhas: 1,
+    ensaios: [
+      ['Faixas e extensão aplicada',  'estacas de 20 m'],
+      ['Massa aplicada por caminhão', 'toneladas'],
+      ['Espessura média e taxa',      'DNIT 031/2024'],
+    ],
+  },
   sondagem: {
     chave: 'sondagem',
     familia: 'cauq',
@@ -10581,6 +11008,7 @@ const ABA_DO_MODO = {
   completo:       'identificacao',
   marshall:       'cqbetume',
   m031:           'm31granul',
+  aplicacao:      'aplicacao',
   sondagem:       'sondagem',
   concreto:       'cbpeca',
   insumos:        'infinura',
@@ -10588,7 +11016,7 @@ const ABA_DO_MODO = {
 
 /** Rótulo curto para o chip do cabeçalho. */
 const ROTULO_CURTO = { simples:'Simples', caracterizacao:'5 ensaios', completo:'Completo',
-                       marshall:'Marshall', m031:'Marshall 031', sondagem:'Sondagem',
+                       marshall:'Marshall', m031:'Marshall 031', aplicacao:'Aplicação', sondagem:'Sondagem',
                        concreto:'Concreto', insumos:'Insumos' };
 
 function montarModos() {
@@ -10626,7 +11054,7 @@ function aplicarModo() {
   const m = MODOS[estado.modo];
   aplicarFamilia();
   // no Marshall 031/2024 o registro e as estacas saem de Dados e vão para a aba do ensaio
-  document.body.classList.toggle('modo-m031', estado.modo === 'm031');
+  document.body.classList.toggle('modo-m031', ['m031', 'aplicacao'].includes(estado.modo));
 
   document.querySelectorAll('[data-modos]').forEach(el => {
     const vale = el.dataset.modos.split(' ').includes(estado.modo);
@@ -12290,6 +12718,7 @@ const FOLHAS_POR_MODO = {
   marshall:       ['cauq'],
   /* Marshall 031/2024: o laudo da planilha e, havendo, a folha dos agregados */
   m031:           ['m031'],
+  aplicacao:      ['aplicacao'],
   /* Sondagem: o lote inteiro de furos numa folha */
   sondagem:       ['sondagem'],
   /* Concreto: uma peça concretada, uma folha */
@@ -13044,6 +13473,7 @@ const CONSTRUTORES = {
   cauq:          folhaCauq,
   sondagem:      folhaSondagem,
   m031:          folhaM031,
+  aplicacao:     folhaAplicacao,
   concreto:      folhaConcreto,
   insumos:       folhaInsumos,
   granulometria: folhaGranulometria,
@@ -13088,6 +13518,7 @@ function montarFolhas(r) {
   if (previa) {
     const fecha = estado.modo === 'sondagem' ? folhaSondagem
       : estado.modo === 'm031' ? folhaM031
+      : estado.modo === 'aplicacao' ? folhaAplicacao
       : ({ cauq: folhaCauq, concreto: folhaConcreto,
            insumos: folhaInsumos }[estado.familia] || folhaResumo);
     const f = fecha(r, 1, 1);
@@ -13711,7 +14142,7 @@ function montarTudoDoZero() {
   montarCapsulas(); montarPeneiras(); montarLP(); montarLL(); montarComp(); montarCbr();
   montarFuros(); montarEA(); montarPic(); montarSed(); montarSedCap();
   montarAgendaSolos();
-  montarEquipamentos(); montarFrasco(); montarCauq(); montarSondagem(); montarM031();
+  montarEquipamentos(); montarFrasco(); montarCauq(); montarSondagem(); montarM031(); montarAplicacao();
   montarConcreto(); montarInsumos();
   montarFamilias();
   montarDados(); montarDadosCauq(); montarDadosConcreto(); montarDadosInsumos();
@@ -13769,6 +14200,24 @@ function resumoDoCalculo(c) {
       idades:  q ? q.idades.length : null,
       ampl:    g28 ? g28.amplitude : null,
       atende:  q ? q.atende : null,
+    };
+  }
+  if (cauq && estado.modo === 'aplicacao') {
+    const q = c.aplicacao || {};
+    const ap = estado.aplicacao, mc = estado.medicaoCauq || {};
+    return { ...base,
+      estaca: localAplicacao(),
+      camada: 'APLICAÇÃO DE C.A.U.Q',
+      lado: mc.lado || '',
+      faixas: (q.faixas || []).map(f => ({ inicial: f.inicial || '', final: f.final || '', extensao: f.extensao ?? null })),
+      largura: ap.largura, espessura: ap.espessura, densidade: q.densidade ?? null,
+      extensaoTotal: q.extensaoTotal ?? null, area: q.area ?? null,
+      tonTeorica: q.tonTeorica ?? null, tonAplicada: q.tonAplicada ?? null,
+      diferenca: q.diferenca ?? null, espObtida: q.espessuraObtida ?? null, taxa: q.taxa ?? null,
+      caminhoes: (q.caminhoes || []).length,
+      placas: (q.caminhoes || []).map(x => x.placa).filter(Boolean).join(', '),
+      clima: ap.clima || '', obsAplicacao: ap.observacoes || '',
+      atende: null,
     };
   }
   if (cauq && estado.modo === 'm031') {
@@ -13875,7 +14324,7 @@ function faltaIdentificar(resumo) {
   if (vazio(resumo.estaca)) falta.push(
     resumo.familia === 'concreto' ? 'Estaca de aplicação'
     : resumo.familia === 'insumos' ? 'RG do ensaio'
-    : resumo.familia === 'cauq' ? 'Estaca' : 'Estaca coleta');
+    : resumo.familia === 'cauq' ? (resumo.modo === 'aplicacao' ? 'Estaca da faixa 1' : 'Estaca') : 'Estaca coleta');
   return falta;
 }
 
@@ -13893,7 +14342,7 @@ function salvarEnsaio() {
       + `salvo tomaria o lugar deste, aqui e na planilha do Drive.`
       + `</span></div>`;
     // no Marshall 031/2024 o registro e a estaca ficam na aba de teor e granulometria
-    irParaAba(estado.modo === 'm031' ? 'm31granul' : 'dados');
+    irParaAba(estado.modo === 'm031' ? 'm31granul' : estado.modo === 'aplicacao' ? 'aplicacao' : 'dados');
     return;
   }
 
@@ -13957,6 +14406,16 @@ function editarEnsaio(id) {
 function abrirListaDoEnsaio(familia) {
   const L = LISTAS_HISTORICO.find(x => x.familias.includes(familia));
   if (L) listasAbertas.add(L.chave);
+}
+
+/** Mesmo caminho do Exportar PDF, mas o PDF sai direto para o compartilhar do celular. */
+async function enviarEnsaioWhatsapp(id) {
+  const e = historico.find(x => x.id === id);
+  if (!e) return;
+  const guarda = fotografarEnsaio();
+  aplicarEnsaio(e.foto);
+  try { await enviarPdfWhatsapp(); }
+  finally { aplicarEnsaio(guarda); }
 }
 
 function exportarEnsaio(id) {
@@ -14141,6 +14600,12 @@ function cartoesDoHistorico(lista) {
       ['Atingido',  r.pct === null ? '—' : num(r.pct, 0), r.pct === null ? '' : '% do fck'],
       ['Corpos de prova', num(r.cps, 0), `em ${num(r.idades, 0)} idades`],
       ['Resultado', r.atende === null ? 'à romper' : (r.atende ? 'atende' : 'não atende'), ''],
+    ] : r.modo === 'aplicacao' ? [
+      ['Toneladas',      num(r.tonAplicada, 2), 't'],
+      ['Área',           num(r.area, 1),        'm²'],
+      ['Esp. obtida',    num(r.espObtida, 2),   'cm'],
+      ['Taxa',           num(r.taxa, 1),        'kg/m²'],
+      ['Caminhões',      num(r.caminhoes, 0),   ''],
     ] : r.modo === 'sondagem' ? [
       ['Densidade média', num(r.densidade, 3), 'g/cm³'],
       ['Vazios',          num(r.vaziosSd, 2),  '%'],
@@ -14184,6 +14649,7 @@ function cartoesDoHistorico(lista) {
       <div class="acoes">
         <button class="btn sm" type="button" data-editar="${e.id}">Editar</button>
         <button class="btn ghost sm" type="button" data-pdf="${e.id}">Exportar PDF</button>
+        <button class="btn ghost sm zap" type="button" data-zap="${e.id}">WhatsApp</button>
         ${botoesDeExclusao(e)}
       </div>
     </div>`;
@@ -14249,10 +14715,10 @@ function ligarBotoesDoHistorico() {
   if (!aba || aba.dataset.ligado) return;
   aba.dataset.ligado = '1';
   aba.addEventListener('click', e => {
-    const b = e.target.closest('[data-editar],[data-pdf],[data-excluir],[data-excluir-ok],'
+    const b = e.target.closest('[data-editar],[data-pdf],[data-zap],[data-excluir],[data-excluir-ok],'
       + '[data-excluir-nao],[data-romper],[data-lista],[data-painel],[data-painel-nuvem]');
     if (!b || !aba.contains(b)) return;
-    const { editar, pdf, excluir, excluirOk, excluirNao,
+    const { editar, pdf, zap, excluir, excluirOk, excluirNao,
             romper, lista, painel, painelNuvem } = b.dataset;
     try {
       if (painelNuvem) alternarPainelNuvem();
@@ -14261,6 +14727,7 @@ function ligarBotoesDoHistorico() {
       else if (editar) editarEnsaio(editar);
       else if (romper) editarEnsaio(romper);
       else if (pdf) exportarEnsaio(pdf);
+      else if (zap) enviarEnsaioWhatsapp(zap);
       else if (excluirNao) cancelarExclusao();
       else if (excluirOk) excluirEnsaio(excluirOk);
       else if (excluir) pedirExclusao(excluir);
@@ -14282,7 +14749,190 @@ function semearHistorico() {
   historico = gravado && gravado.length ? gravado : [];
   proximoId = historico.length + 1;
   montarHistorico();
+}/* ============================================================
+   ENVIAR O RELATÓRIO PELO WHATSAPP
+   Monta o PDF das folhas dentro do próprio app e abre o menu de
+   compartilhar do celular — de onde se escolhe o WhatsApp (ou um
+   grupo, e-mail, Drive…). No computador, o PDF é baixado.
+
+   As duas bibliotecas (html2canvas e jsPDF) só são carregadas no
+   primeiro envio, da cdnjs: juntas somam ~550 KB, e embuti-las
+   dobraria o tempo de abertura do app em troca de um botão que
+   já precisa de internet para funcionar — o WhatsApp precisa.
+   Depois da primeira vez o navegador as guarda.
+   ============================================================ */
+
+const LIBS_PDF = [
+  ['html2canvas', 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'],
+  ['jspdf',       'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'],
+];
+
+function carregarScript(url) {
+  return new Promise((ok, erro) => {
+    const s = document.createElement('script');
+    s.src = url; s.async = true;
+    s.onload = ok;
+    s.onerror = () => erro(new Error('sem internet para preparar o PDF'));
+    document.head.appendChild(s);
+  });
 }
+
+async function carregarLibsPdf() {
+  if (!window.html2canvas) await carregarScript(LIBS_PDF[0][1]);
+  if (!(window.jspdf && window.jspdf.jsPDF)) await carregarScript(LIBS_PDF[1][1]);
+}
+
+/** Nome do arquivo: tipo, registro e data — o que se procura depois no WhatsApp. */
+function nomeDoPdf() {
+  const m = medicaoAtual();
+  const M = MODOS[estado.modo];
+  const limpa = t => String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^\w.-]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  const reg = estado.familia === 'concreto' ? (((estado.concreto || {}).peca || {}).rg || m.registro) : m.registro;
+  return [limpa(M ? M.nome : 'Relatorio'), reg ? 'REG-' + limpa(reg) : '', limpa(m.dataEnsaio)]
+    .filter(Boolean).join('_') + '.pdf';
+}
+
+/** A frase que vai junto do arquivo. */
+function textoDoPdf() {
+  const m = medicaoAtual();
+  const M = MODOS[estado.modo];
+  const partes = [`${M ? M.nome : 'Relatório'}`, m.registro ? `Registro ${m.registro}` : '',
+                  typeof dataTexto === 'function' ? dataTexto() : ''];
+  const c = ULTIMO_CALCULO || {};
+  if (estado.modo === 'm031' && c.m031) {
+    const q = c.m031, md = q.marshall.medias;
+    partes.push(`Teor ${fmt(q.teor, 2)}% · Vv ${fmt(md.vazios, 2)}% · RBV ${fmt(md.rbv, 1)}% · `
+      + `Estab. ${fmt(md.estabilidade, 0)} kgf · ${q.atende === null ? '' : q.atende ? 'ATENDE' : 'NÃO ATENDE'}`);
+  }
+  if (estado.modo === 'aplicacao' && c.aplicacao) {
+    const q = c.aplicacao;
+    partes.push(`${fmt(q.tonAplicada, 2)} t em ${fmt(q.area, 1)} m² · esp. obtida ${fmt(q.espessuraObtida, 2)} cm`);
+  }
+  if (m.obra) partes.push(`Obra ${m.obra}`);
+  return partes.filter(Boolean).join(' · ');
+}
+
+/**
+ * O SVG vai para a imagem como arquivo solto, e lá dentro `var(--cor)` não
+ * existe: a curva sairia preta ou sumiria. Antes de fotografar, cada cor
+ * vira o valor já resolvido pela tela.
+ */
+function resolverCoresSvg(raiz) {
+  raiz.querySelectorAll('svg *').forEach(el => {
+    const cs = getComputedStyle(el);
+    ['stroke', 'fill'].forEach(p => {
+      const a = el.getAttribute(p);
+      if (a && a.includes('var(')) el.setAttribute(p, cs[p]);
+    });
+    if (el.getAttribute('opacity') === null && cs.opacity !== '1') el.setAttribute('opacity', cs.opacity);
+  });
+}
+
+/** Folhas do relatório em curso → PDF (Blob). Mesmo HTML que a impressão usa. */
+async function montarPdf() {
+  await carregarLibsPdf();
+  const folhaImp = $('folhaImpressao');
+  const tema = document.documentElement.getAttribute('data-theme');
+  document.documentElement.setAttribute('data-theme', 'light');   // papel é branco
+  folhaImp.classList.add('montando', 'para-pdf');
+  try {
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const folhas = [...folhaImp.querySelectorAll('.folha')];
+    if (!folhas.length) throw new Error('não há folha para enviar');
+    resolverCoresSvg(folhaImp);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+    const MARGEM = 8, LARG = 210 - 2 * MARGEM, ALT = 297 - 2 * MARGEM;
+    for (let i = 0; i < folhas.length; i++) {
+      const canvas = await window.html2canvas(folhas[i], {
+        scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false,
+        windowWidth: folhas[i].scrollWidth,
+      });
+      let w = LARG, h = canvas.height * LARG / canvas.width;
+      if (h > ALT) { w = w * ALT / h; h = ALT; }        // folha mais alta que o A4: encolhe inteira
+      if (i) pdf.addPage();
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.85), 'JPEG', MARGEM + (LARG - w) / 2, MARGEM, w, h);
+    }
+    return pdf.output('blob');
+  } finally {
+    folhaImp.classList.remove('montando', 'para-pdf');
+    if (tema) document.documentElement.setAttribute('data-theme', tema);
+    else document.documentElement.removeAttribute('data-theme');
+    atualizar();          // redesenha os gráficos com as cores de volta
+  }
+}
+
+let pdfPronto = null;     // guardado para o segundo toque, quando o celular exigir
+
+function avisarEnvio(tipo, html) {
+  document.querySelectorAll('[data-aviso-envio]').forEach(el => {
+    el.innerHTML = html ? `<div class="aviso ${tipo === 'erro' ? 'erro' : tipo === 'ok' ? 'ok' : ''}">`
+      + `<span class="ico">${tipo === 'erro' ? '✕' : tipo === 'ok' ? '✓' : '…'}</span><span>${html}</span></div>` : '';
+  });
+}
+
+async function compartilharPdf(pronto) {
+  const { arquivo, texto } = pronto;
+  if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+    await navigator.share({ files: [arquivo], title: arquivo.name, text: texto });
+    return 'compartilhado';
+  }
+  // computador (ou navegador sem compartilhar arquivo): baixa o PDF
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(arquivo);
+  a.download = arquivo.name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+  return 'baixado';
+}
+
+/** O botão: gera o PDF do ensaio que está na tela e abre o compartilhar. */
+async function enviarPdfWhatsapp() {
+  avisarEnvio('andamento', 'Preparando o PDF…');
+  try {
+    const blob = await montarPdf();
+    pdfPronto = { arquivo: new File([blob], nomeDoPdf(), { type: 'application/pdf' }), texto: textoDoPdf() };
+  } catch (e) {
+    avisarEnvio('erro', `Não consegui preparar o PDF: ${e.message}. `
+      + 'Confira a internet — na primeira vez o app baixa o gerador de PDF.');
+    return null;
+  }
+  return enviarPdfPronto();
+}
+
+async function enviarPdfPronto() {
+  if (!pdfPronto) return null;
+  try {
+    const como = await compartilharPdf(pdfPronto);
+    avisarEnvio('ok', como === 'compartilhado'
+      ? `PDF enviado: <b>${pdfPronto.arquivo.name}</b>.`
+      : `PDF baixado: <b>${pdfPronto.arquivo.name}</b>. Anexe no WhatsApp Web ou Desktop.`);
+    return como;
+  } catch (e) {
+    if (e && e.name === 'AbortError') { avisarEnvio('', ''); return 'cancelado'; }
+    /* o celular só abre o compartilhar logo depois de um toque; se o PDF demorou,
+       ele recusa — um segundo toque, já com o arquivo pronto, resolve */
+    avisarEnvio('andamento', `PDF pronto (<b>${pdfPronto.arquivo.name}</b>). `
+      + `<button class="btn sm" type="button" data-enviar-pronto="1">Toque para enviar</button>`);
+    return 'aguardando';
+  }
+}
+
+document.addEventListener('click', e => {
+  if (e.target.closest('[data-enviar-pronto]')) enviarPdfPronto();
+});
+
+/* Com o app instalado e internet, baixa o gerador de PDF em segundo plano uma
+   vez: o trabalhador de serviço o guarda, e o primeiro envio funciona mesmo
+   que o laboratorista já esteja sem sinal na pista. */
+window.addEventListener('load', () => setTimeout(() => {
+  try {
+    if (!navigator.onLine || !navigator.serviceWorker || !navigator.serviceWorker.controller) return;
+    LIBS_PDF.forEach(([, url]) => fetch(url, { mode: 'no-cors' }).catch(() => {}));
+  } catch (e) {}
+}, 8000));
+
 /* ============================================================
    SINCRONIZAÇÃO COM A PLANILHA DO DRIVE
    O app conversa com um Apps Script publicado como aplicativo da
@@ -15042,6 +15692,7 @@ function imprimirRelatorio(depois) {
 }
 // o listener recebe o evento do clique; passá-lo adiante faria `depois()`
 // tentar chamar um MouseEvent e estourar logo depois da impressão
+$('btnWhatsapp').addEventListener('click', () => enviarPdfWhatsapp());
 ['btnImprimir', 'btnImprimirSondagem', 'btnRelatorio', 'btnRelatorio2'].forEach(id =>
   $(id).addEventListener('click', () => imprimirRelatorio()));
 
@@ -15092,6 +15743,7 @@ montarFrasco();
 montarCauq();
 montarSondagem();
 montarM031();
+montarAplicacao();
 montarConcreto();
 montarInsumos();
 montarFamilias();

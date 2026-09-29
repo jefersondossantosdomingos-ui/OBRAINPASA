@@ -4,7 +4,7 @@
    mudança dela que faz o navegador perceber que há atualização.
    ============================================================ */
 
-const VERSAO = '2026-09-29.93f0cda1';
+const VERSAO = '2026-09-29.49093721';
 const PREFIXO = 'ct-inpasa-';
 const CACHE = PREFIXO + VERSAO;
 
@@ -55,6 +55,21 @@ self.addEventListener('fetch', evento => {
 
   // a conversa com a planilha do Drive nunca passa pelo cache
   if (pedido.method !== 'GET') return;
+
+  /* o gerador de PDF do envio pelo WhatsApp (cdnjs) fica guardado à parte, num
+     cache que não é apagado a cada versão: baixado uma vez, gera PDF sem sinal */
+  if (new URL(pedido.url).hostname === 'cdnjs.cloudflare.com') {
+    evento.respondWith((async () => {
+      const libs = await caches.open(PREFIXO.replace(/-$/, '') + '.libs');
+      const guardado = await libs.match(pedido.url);
+      if (guardado) return guardado;
+      const resposta = await fetch(pedido);
+      if (resposta && (resposta.ok || resposta.type === 'opaque')) libs.put(pedido.url, resposta.clone());
+      return resposta;
+    })());
+    return;
+  }
+
   if (new URL(pedido.url).origin !== self.location.origin) return;
 
   evento.respondWith((async () => {
