@@ -13649,11 +13649,26 @@ function lerHistoricoGravado() {
    Fotografar e restaurar um ensaio
    ------------------------------------------------------------ */
 
+/**
+ * Resultados guardados dentro de `estado` só para a tela. Não definem o ensaio —
+ * são refeitos por atualizar() ao abrir — e pesam: o do Marshall 031/2024 tem
+ * ~19 mil caracteres. Levá-los na fotografia fazia a linha do ensaio passar do
+ * limite de 50 mil caracteres por célula do Google Planilhas, e a planilha
+ * recusava a sincronização inteira.
+ */
+const CALCULOS_DE_TELA = ['cauqCalc', 'm031Calc'];
+
+function semCalculoDeTela(estadoFoto) {
+  const e = { ...(estadoFoto || {}) };
+  CALCULOS_DE_TELA.forEach(k => delete e[k]);
+  return e;
+}
+
 /** Tudo que define o ensaio: o estado mais os campos soltos da tela. */
 function fotografarEnsaio() {
   const soltos = {};
   CAMPOS_SOLTOS.forEach(id => { const e = $(id); if (e) soltos[id] = e.value; });
-  return { estado: JSON.parse(JSON.stringify(estado)), soltos };
+  return { estado: semCalculoDeTela(JSON.parse(JSON.stringify(estado))), soltos };
 }
 
 /**
@@ -14478,7 +14493,9 @@ function paraNuvem(e) {
     aparelho: e.aparelho || nuvem.aparelho,
     atualizadoEm: e.atualizadoEm || e.salvoEm || new Date().toISOString(),
     excluido: !!e.excluido,
-    foto: { foto: e.foto, resumo: r, pendencias: r.pendencias || [] },
+    // ensaios salvos antes ainda trazem o cálculo da tela dentro: sai enxuto
+    foto: { foto: e.foto ? { ...e.foto, estado: semCalculoDeTela(e.foto.estado) } : e.foto,
+            resumo: r, pendencias: r.pendencias || [] },
   };
 }
 
